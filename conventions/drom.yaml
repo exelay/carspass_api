@@ -1,0 +1,34 @@
+city:
+  spb: 135
+  msk: 92
+  nvs: 109
+  kzn: 58
+  vvo: 23
+  ekb: 43
+  kgd: 59
+  pkv: 126
+  pzk: 926
+  ikt: 56
+
+transmission:
+  mt: 1
+  at: 2
+
+steering_w:
+  right: 1
+  left: 2
+
+car_body:
+    sedan: 10
+    cabrio: 11
+    van: None
+    pickup: 12
+    limo: None
+    minivan: 6
+    coupe: 1
+    wagon: 3
+    suv3: 8
+    suv5: 7
+    liftback: 9
+    hatch3: 4
+    hatch5: 5
