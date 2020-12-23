@@ -1,16 +1,26 @@
 import uuid
+from typing import Optional
 
 from fastapi import FastAPI
-from typing import Optional
+from scrapyd_api import ScrapydAPI
+from pymongo import MongoClient
+
+from settings import PROJECT_NAME, MONGO_PASSWORD
 
 
 app = FastAPI()
+scrapyd = ScrapydAPI()
+
+client = MongoClient(
+    f"mongodb+srv://imdb:{MONGO_PASSWORD}@carspass.mskrx.mongodb.net/Carspass?retryWrites=true&w=majority"
+)
+db = client['Carspass']
 
 
 async def run_spiders(token: uuid, brand: str, model: str, sites: list, config: dict):
-    spiders = {}
     for site in sites:
-        spider = spiders[site]
+        # TODO adapt config for each spiders
+        scrapyd.schedule(PROJECT_NAME, site, brand=brand, model=model, token=token)
 
 
 @app.post('/startSearch')
@@ -51,4 +61,9 @@ async def start_search(
 
 @app.get('/getResults')
 async def get_results(token: str):
-    return {'search_token': token}
+    results = list()
+    collection = db[token]
+    for elem in collection.find():
+        elem.pop('_id')
+        results.append(elem)
+    return {'search_token': token, 'data': results}
