@@ -52,7 +52,7 @@ async def start_search(
 
 
 @router.get('/standard_search/getResults', tags=['standard_search'])
-async def get_results(token: uuid):
+async def get_results(token: str):
     """
     A GET method that returns JSON response containing search results.
     """
