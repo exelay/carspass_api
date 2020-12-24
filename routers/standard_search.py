@@ -1,7 +1,7 @@
 import uuid
 from typing import Optional
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from utils import run_spiders
 from settings import DB
@@ -12,21 +12,26 @@ router = APIRouter()
 
 @router.post('/standard_search/startSearch', tags=['standard_search'])
 async def start_search(
-    brand: str,
-    model: str,
     sites: str,
-    city: Optional[str] = 'spb',
-    radius: Optional[int] = None,
-    transmission: Optional[str] = None,
-    price_min: Optional[int] = None,
-    price_max: Optional[int] = None,
-    year_min: Optional[int] = None,
-    year_max: Optional[int] = None,
-    v_min: Optional[float] = None,
-    v_max: Optional[float] = None,
-    steering_w: Optional[str] = None,
-    car_body: Optional[str] = None,
+    brand: Optional[str] = Query(None, title='Car brand'),
+    model: Optional[str] = Query(None, title='Car model'),
+    city: Optional[str] = Query('spb', title='City of search'),
+    radius: Optional[int] = Query(100, title='Search radius'),
+    transmission: Optional[str] = Query(None, title='Type of transmission'),
+    price_min: Optional[int] = Query(None, title='Minimum price'),
+    price_max: Optional[int] = Query(None, title='Maximum price'),
+    year_min: Optional[int] = Query(None, title='Minimum year'),
+    year_max: Optional[int] = Query(None, title='Maximum year'),
+    v_min: Optional[float] = Query(None, title='Minimum engine capacity'),
+    v_max: Optional[float] = Query(None, title='Maximum engine capacity'),
+    steering_w: Optional[str] = Query(None, title='Steering wheel position'),
+    car_body: Optional[str] = Query(None, title='Car body'),
 ):
+    """
+    A **POST** method that starts searching process and return response with JSON
+    that contain status and unique search **token**.
+    This **token** will be needed to get search results in the **getResults** method.
+    """
     token = uuid.uuid1().hex
     config = {
         'city': city,
@@ -47,7 +52,10 @@ async def start_search(
 
 
 @router.get('/standard_search/getResults', tags=['standard_search'])
-async def get_results(token: str):
+async def get_results(token: uuid):
+    """
+    A GET method that returns JSON response containing search results.
+    """
     results = list()
     collection = DB[token]
     for elem in collection.find():

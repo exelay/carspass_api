@@ -1,5 +1,6 @@
 import uuid
 import yaml
+from typing import Union
 from scrapyd_api import ScrapydAPI
 
 from settings import PROJECT_NAME
@@ -27,7 +28,13 @@ async def adapt_config(config: dict, site: str) -> dict:
     }
 
 
-async def run_spiders(token: uuid, brand: str, model: str, sites: list, config: dict):
+async def run_spiders(
+        token: uuid,
+        brand: Union[str, None],
+        model: Union[str, None],
+        sites: list,
+        config: dict
+):
     for site in sites:
         site_config = await adapt_config(config, site)
         scrapyd.schedule(PROJECT_NAME, site,
