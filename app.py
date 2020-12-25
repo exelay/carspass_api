@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 
-from routers import standard_search
+from routers import cars
 
 
 tags_metadata = [
     {
-        "name": "standard_search",
+        "name": "cars",
         "description": "Standard search process.",
     },
 ]
@@ -16,4 +16,4 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 
-app.include_router(standard_search.router)
+app.include_router(cars.router)

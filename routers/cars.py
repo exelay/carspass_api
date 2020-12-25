@@ -10,7 +10,7 @@ from settings import DB
 router = APIRouter()
 
 
-@router.post('/standard_search/startSearch', tags=['standard_search'])
+@router.post('/cars/startSearch', tags=['cars'])
 async def start_search(
     sites: str,
     brand: Optional[str] = Query(None, title='Car brand'),
@@ -51,7 +51,7 @@ async def start_search(
     return {'search_token': token}
 
 
-@router.get('/standard_search/getResults', tags=['standard_search'])
+@router.get('/cars/getResults', tags=['cars'])
 async def get_results(token: str):
     """
     A GET method that returns JSON response containing search results.
