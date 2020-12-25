@@ -3,7 +3,7 @@ from typing import Optional
 
 from fastapi import APIRouter, Query
 
-from utils import run_spiders
+from utils import run_spiders, spiders_finished
 from settings import DB
 
 
@@ -56,6 +56,9 @@ async def get_results(token: str):
     """
     A GET method that returns JSON response containing search results.
     """
+    while True:
+        if await spiders_finished(token):
+            break
     results = list()
     collection = DB[token]
     for elem in collection.find():

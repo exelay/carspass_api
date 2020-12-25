@@ -5,8 +5,8 @@ from scrapyd_api import ScrapydAPI
 
 from settings import PROJECT_NAME
 
-
 scrapyd = ScrapydAPI()
+JOBS = dict()
 
 
 async def adapt_config(config: dict, site: str) -> dict:
@@ -35,12 +35,28 @@ async def run_spiders(
         sites: list,
         config: dict
 ):
+    JOBS[token] = list()
     for site in sites:
         site_config = await adapt_config(config, site)
-        scrapyd.schedule(PROJECT_NAME, site,
-                         brand=brand, model=model, token=token,
-                         city=site_config['city'], radius=config['radius'],
-                         transmission=site_config['transmission'], price_min=config['price_min'],
-                         price_max=config['price_max'], year_min=config['year_min'], year_max=config['year_max'],
-                         v_min=site_config['v_min'], v_max=site_config['v_max'],
-                         steering_w=site_config['steering_w'], car_body=site_config['car_body'])
+        job = scrapyd.schedule(PROJECT_NAME, site,
+                               brand=brand, model=model, token=token,
+                               city=site_config['city'], radius=config['radius'],
+                               transmission=site_config['transmission'], price_min=config['price_min'],
+                               price_max=config['price_max'], year_min=config['year_min'], year_max=config['year_max'],
+                               v_min=site_config['v_min'], v_max=site_config['v_max'],
+                               steering_w=site_config['steering_w'], car_body=site_config['car_body'])
+        JOBS[token].append(job)
+
+
+async def spiders_finished(token: uuid) -> bool:
+    running_jobs = [job['id'] for job in scrapyd.list_jobs(PROJECT_NAME)['running']]
+    if not running_jobs:
+        return True
+
+    jobs = JOBS[token]
+
+    for job in jobs:
+        if job in running_jobs:
+            return False
+    JOBS.pop(token)
+    return True
