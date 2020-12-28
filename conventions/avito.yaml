@@ -9,3 +9,7 @@ city:
   pkv: pskov
   pzk: priozersk
   ikt: irkutsk
+
+vendor:
+  domestic: otechestvennie
+  foreign: inomarki

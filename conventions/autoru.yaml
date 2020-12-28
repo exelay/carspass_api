@@ -32,3 +32,7 @@ car_body:
     liftback: LIFTBACK
     hatch3: HATCHBACK_3_DOORS
     hatch5: HATCHBACK_5_DOORS
+
+vendor:
+  domestic: vendor-domestic
+  foreign: vendor-foreign
