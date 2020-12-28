@@ -25,6 +25,7 @@ async def adapt_config(config: dict, site: str) -> dict:
         'car_body': conventions['car_body'].get(config['car_body']),
         'v_min': v_min,
         'v_max': v_max,
+        'vendor': conventions['vendor'].get(config['vendor']),
     }
 
 
@@ -44,7 +45,8 @@ async def run_spiders(
                                transmission=site_config['transmission'], price_min=config['price_min'],
                                price_max=config['price_max'], year_min=config['year_min'], year_max=config['year_max'],
                                v_min=site_config['v_min'], v_max=site_config['v_max'],
-                               steering_w=site_config['steering_w'], car_body=site_config['car_body'])
+                               steering_w=site_config['steering_w'], car_body=site_config['car_body'],
+                               vendor=site_config['vendor'])
         JOBS[token].append(job)
 
 

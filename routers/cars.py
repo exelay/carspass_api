@@ -26,6 +26,7 @@ async def start_search(
     v_max: Optional[float] = Query(None, title='Maximum engine capacity'),
     steering_w: Optional[str] = Query(None, title='Steering wheel position'),
     car_body: Optional[str] = Query(None, title='Car body'),
+    vendor: Optional[str] = Query(None, title='Vendor')
 ):
     """
     A **POST** method that starts searching process and return response with JSON
@@ -45,6 +46,7 @@ async def start_search(
         'v_max': v_max,
         'steering_w': steering_w,
         'car_body': car_body,
+        'vendor': vendor,
     }
     sites = sites.split(',')
     await run_spiders(token, brand, model, sites, config)
