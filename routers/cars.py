@@ -1,4 +1,5 @@
 import uuid
+from time import sleep
 from typing import Optional
 
 from fastapi import APIRouter, Query
@@ -61,6 +62,7 @@ async def get_results(token: str):
     A GET method that returns JSON response containing search results.
     """
     while True:
+        sleep(1)
         if await spiders_finished(token):
             break
     results = list()
