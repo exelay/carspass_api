@@ -19,13 +19,13 @@ async def adapt_config(config: dict, site: str) -> dict:
         v_min = config['v_min']
         v_max = config['v_max']
     return {
-        'city': conventions['city'].get(config['city']),
-        'transmission': conventions['transmission'].get(config['transmission']),
-        'steering_w': conventions['steering_w'].get(config['steering_w']),
-        'car_body': conventions['car_body'].get(config['car_body']),
+        'city': conventions.get('city').get(config['city']),
+        'transmission': conventions.get('transmission').get(config['transmission']),
+        'steering_w': conventions.get('steering_w').get(config['steering_w']),
+        'car_body': conventions.get('car_body').get(config['car_body']),
         'v_min': v_min,
         'v_max': v_max,
-        'vendor': conventions['vendor'].get(config['vendor']),
+        'vendor': conventions.get('vendor').get(config['vendor']),
     }
 
 
