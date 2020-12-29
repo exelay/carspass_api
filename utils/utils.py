@@ -55,8 +55,10 @@ async def spiders_finished(token: uuid) -> bool:
     if not running_jobs:
         JOBS.pop(token)
         return True
-
-    jobs = JOBS[token]
+    try:
+        jobs = JOBS[token]
+    except KeyError:
+        return True
 
     for job in jobs:
         if job in running_jobs:
