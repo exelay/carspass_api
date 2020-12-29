@@ -52,17 +52,18 @@ async def run_spiders(
 
 async def spiders_finished(token: uuid) -> bool:
     running_jobs = [job['id'] for job in scrapyd.list_jobs(PROJECT_NAME)['running']]
-    if not running_jobs:
+    try:
+        if not running_jobs:
+            JOBS.pop(token)
+            return True
+
+        jobs = JOBS[token]
+
+        for job in jobs:
+            if job in running_jobs:
+                return False
+
         JOBS.pop(token)
         return True
-    try:
-        jobs = JOBS[token]
     except KeyError:
         return True
-
-    for job in jobs:
-        if job in running_jobs:
-            return False
-
-    JOBS.pop(token)
-    return True
