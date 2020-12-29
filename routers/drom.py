@@ -13,7 +13,7 @@ scrapyd = ScrapydAPI()
 router = APIRouter()
 
 
-@router.post('/drom/startSearch', tags=['drom'])
+@router.get('/drom/startSearch', tags=['drom'])
 async def start_search(
     brand: Optional[str] = Query(None, title='Car brand'),
     model: Optional[str] = Query(None, title='Car model'),
@@ -55,9 +55,12 @@ async def start_search(
         'latest_ads': latest_ads,
     }
     job = await run_spider(token, brand, model, site, config)
-    sleep(0.5)
+    print(job)
     while True:
-        if job in [job['id'] for job in scrapyd.list_jobs(PROJECT_NAME)['finished']]:
+        sleep(1)
+        finished_jobs = [job['id'] for job in scrapyd.list_jobs(PROJECT_NAME)['finished']]
+        print(finished_jobs)
+        if job in finished_jobs:
             break
     collection = DB[token]
     for elem in collection.find():
