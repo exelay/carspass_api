@@ -1,12 +1,16 @@
 from fastapi import FastAPI
 
-from routers import cars
+from routers import cars, drom
 
 
 tags_metadata = [
     {
         "name": "cars",
         "description": "Standard search process.",
+    },
+    {
+        "name": "drom",
+        "description": "drom.ru search process.",
     },
 ]
 
@@ -17,3 +21,4 @@ app = FastAPI(
 )
 
 app.include_router(cars.router)
+app.include_router(drom.router)
