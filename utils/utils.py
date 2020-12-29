@@ -35,7 +35,7 @@ async def run_spiders(
         model: Union[str, None],
         sites: list,
         config: dict
-):
+) -> None:
     JOBS[token] = list()
     for site in sites:
         site_config = await adapt_config(config, site)
@@ -53,6 +53,7 @@ async def run_spiders(
 async def spiders_finished(token: uuid) -> bool:
     running_jobs = [job['id'] for job in scrapyd.list_jobs(PROJECT_NAME)['running']]
     if not running_jobs:
+        JOBS.pop(token)
         return True
 
     jobs = JOBS[token]
@@ -60,5 +61,6 @@ async def spiders_finished(token: uuid) -> bool:
     for job in jobs:
         if job in running_jobs:
             return False
+
     JOBS.pop(token)
     return True
