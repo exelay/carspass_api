@@ -63,3 +63,21 @@ async def spiders_finished(token: uuid) -> bool:
         return True
     except KeyError:
         return True
+
+
+async def run_spider(
+        token: uuid,
+        brand: Union[str, None],
+        model: Union[str, None],
+        site: str,
+        config: dict
+) -> None:
+    site_config = await adapt_config(config, site)
+    scrapyd.schedule(PROJECT_NAME, site,
+                     brand=brand, model=model, token=token,
+                     city=site_config['city'], radius=config['radius'],
+                     transmission=site_config['transmission'], price_min=config['price_min'],
+                     price_max=config['price_max'], year_min=config['year_min'], year_max=config['year_max'],
+                     v_min=site_config['v_min'], v_max=site_config['v_max'],
+                     steering_w=site_config['steering_w'], car_body=site_config['car_body'],
+                     vendor=site_config['vendor'], latest_ads=config['latest_ads'])
