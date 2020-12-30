@@ -32,7 +32,7 @@ async def start_search(
     latest_ads: Optional[str] = Query(None, title='Latest ads in 24 or 72 hours')
 ):
     """
-    A **POST** method that starts autoru searching process and return response with JSON
+    A **GET** method that starts **auto.ru** searching process and return response with JSON
     that contain status and unique search **token**.
     This **token** will be needed to get search results in the **getResults** method.
     """

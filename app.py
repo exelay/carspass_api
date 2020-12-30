@@ -12,6 +12,18 @@ tags_metadata = [
         "name": "drom",
         "description": "drom.ru search process.",
     },
+    {
+        "name": "avito",
+        "description": "avito.ru search process.",
+    },
+    {
+        "name": "amru",
+        "description": "am.ru search process.",
+    },
+    {
+        "name": "autoru",
+        "description": "auto.ru search process.",
+    },
 ]
 
 app = FastAPI(
