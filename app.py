@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from routers import cars, drom
+from routers import cars, drom, avito, autoru, amru
 
 
 tags_metadata = [
@@ -22,3 +22,6 @@ app = FastAPI(
 
 app.include_router(cars.router)
 app.include_router(drom.router)
+app.include_router(avito.router)
+app.include_router(amru.router)
+app.include_router(autoru.router)
