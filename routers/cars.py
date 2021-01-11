@@ -8,7 +8,7 @@ from settings import DB
 router = APIRouter()
 
 
-@router.get('/*/startSearch', tags=['cars'])
+@router.get('/cars/startSearch', tags=['cars'])
 async def start_search(
     sites: str,
     brand: Optional[str] = Query(None, title='Car brand'),
