@@ -1,29 +1,13 @@
 from fastapi import FastAPI
 
-from routers import cars, drom, avito, autoru, amru
+from routers import cars
 
 
 tags_metadata = [
     {
         "name": "cars",
         "description": "Standard search process.",
-    },
-    {
-        "name": "drom",
-        "description": "drom.ru search process.",
-    },
-    {
-        "name": "avito",
-        "description": "avito.ru search process.",
-    },
-    {
-        "name": "amru",
-        "description": "am.ru search process.",
-    },
-    {
-        "name": "autoru",
-        "description": "auto.ru search process.",
-    },
+    }
 ]
 
 app = FastAPI(
@@ -33,7 +17,3 @@ app = FastAPI(
 )
 
 app.include_router(cars.router)
-app.include_router(drom.router)
-app.include_router(avito.router)
-app.include_router(amru.router)
-app.include_router(autoru.router)

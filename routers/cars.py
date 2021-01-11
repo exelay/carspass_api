@@ -1,17 +1,14 @@
-import uuid
-from time import sleep
 from typing import Optional
 
 from fastapi import APIRouter, Query
 
-from utils import run_spiders, spiders_finished
 from settings import DB
 
 
 router = APIRouter()
 
 
-@router.post('/cars/startSearch', tags=['cars'])
+@router.get('/*/startSearch', tags=['cars'])
 async def start_search(
     sites: str,
     brand: Optional[str] = Query(None, title='Car brand'),
@@ -31,11 +28,9 @@ async def start_search(
     latest_ads: Optional[str] = Query(None, title='Latest ads in 24 or 72 hours')
 ):
     """
-    A **POST** method that starts searching process and return response with JSON
-    that contain status and unique search **token**.
-    This **token** will be needed to get search results in the **getResults** method.
+    A **GET** method that starts searching process and return response with JSON
+    that contain search results.
     """
-    token = uuid.uuid1().hex
     config = {
         'city': city,
         'radius': radius,
@@ -52,22 +47,9 @@ async def start_search(
         'latest_ads': latest_ads,
     }
     sites = sites.split(',')
-    await run_spiders(token, brand, model, sites, config)
-    return {'search_token': token}
-
-
-@router.get('/cars/getResults', tags=['cars'])
-async def get_results(token: str):
-    """
-    A GET method that returns JSON response containing search results.
-    """
-    while True:
-        sleep(1)
-        if await spiders_finished(token):
-            break
     results = list()
-    collection = DB[token]
+    collection = DB['carspass']
     for elem in collection.find():
         elem.pop('_id')
         results.append(elem)
-    return {'search_token': token, 'data': results}
+    return {'data': results}
